@@ -31,8 +31,10 @@ class ImagesLoader:
 
         return urls
 
-    def loadImages(self, urls: List[str]) -> None:
+    def loadImages(self) -> None:
         """Creates images using list of urls."""
+        urls = self.createList()
+
         for url in urls:
             image = open(f'{urls.index(url)}.jpg', 'wb')
             image.write(urllib.request.urlopen(url).read())
