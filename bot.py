@@ -1,7 +1,9 @@
 #pip install pytelegrambotapi
 
+from images import ImagesLoader
+
+import random
 import telebot
-import time
 import urllib
 
 
@@ -9,6 +11,10 @@ TOKEN = "5646601158:AAFj4SvlMvP50qW1vM7BVOgm9qleD6Ge7G4"
 
 
 tb = telebot.TeleBot(TOKEN)
+
+# Creates images.
+imageLoader = ImagesLoader()
+imageLoader.loadImages()
 
 
 @tb.message_handler(content_types=['text'])
@@ -31,14 +37,24 @@ def get_text_messages(message):
 def send_photo(message):
     if message.text == "/show-me-yourself":
         tb.send_chat_action(message.chat.id, 'upload_photo')
-        img = open('femboy.jpg', 'rb')
+        img = open('1.jpg', 'rb')
         tb.send_photo(message.chat.id, img, reply_to_message_id=message.message_id)
         img.close()
     elif message.text == "/myphoto":
         tb.send_chat_action(message.chat.id, 'upload_photo')
-        img = open('out.jpg', 'rb')
+
+        imageName = ''
+
+        while True:
+            imageName = f'{random.randint(0, 3)}.jpg'
+            if imageName == '1.jpg':
+                continue
+            break
+        
+        img = open(f'{imageName}', 'rb')
+
         tb.send_photo(message.chat.id, img, reply_to_message_id=message.message_id)
         img.close()
 
-        
+
 tb.polling()
