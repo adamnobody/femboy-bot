@@ -4,7 +4,6 @@ from images import ImagesLoader
 
 import random
 import telebot
-import urllib
 
 
 TOKEN = "5646601158:AAFj4SvlMvP50qW1vM7BVOgm9qleD6Ge7G4"
@@ -18,7 +17,6 @@ imageLoader.loadImages()
 
 
 @tb.message_handler(content_types=['text'])
-
 def get_text_messages(message):
     if message.text == "/makarova":
         tb.send_message(message.from_user.id, "Лучший преподаватель, однозначно")
@@ -47,15 +45,15 @@ def send_photo(message):
         tb.send_chat_action(message.chat.id, 'upload_photo')
 
         imageName = ''
+        random.seed(random.randint(1, 100000))
 
         while True:
-            imageName = f'{random.randint(0, 3)}.jpg'
+            imageName = f'{random.randint(0, imageLoader.getCountOfImages())}.jpg'
             if imageName == '1.jpg':
                 continue
             break
         
         img = open(f'{imageName}', 'rb')
-
         tb.send_photo(message.chat.id, img, reply_to_message_id=message.message_id)
         img.close()
 

@@ -28,7 +28,8 @@ class ImagesLoader:
         """Creates a list of urls for creating images later."""
         file = self.openFile()
         urls = file.read().split('\n')
-
+        urls = [url for url in urls if url]
+        
         return urls
 
     def loadImages(self) -> None:
@@ -36,6 +37,15 @@ class ImagesLoader:
         urls = self.createList()
 
         for url in urls:
-            image = open(f'{urls.index(url)}.jpg', 'wb')
-            image.write(urllib.request.urlopen(url).read())
-            image.close()
+            try:
+                image = open(f'{urls.index(url)}.jpg', 'wb')
+                image.write(urllib.request.urlopen(url).read())
+                image.close()
+            except: pass
+            else: continue
+
+    def getCountOfImages(self) -> int:
+        """Returns number of pictures."""
+        urls = self.createList()
+
+        return len(urls)
