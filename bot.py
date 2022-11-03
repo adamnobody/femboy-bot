@@ -1,7 +1,7 @@
 #pip install pytelegrambotapi
 
 from images import ImagesLoader
-
+from dub import Dub
 import random
 import telebot
 
@@ -18,18 +18,18 @@ imageLoader.loadImages()
 
 @tb.message_handler(content_types=['text'])
 def get_text_messages(message):
-    if message.text == "/makarova":
-        tb.send_message(message.from_user.id, "Лучший преподаватель, однозначно")
-    elif message.text == "/help":
-        tb.send_message(message.from_user.id, "Список команд:\n1. /myphoto - вывод фотографии с вами;\n2. /joke - вывести анекдот;\n3. /makarova - вывод мнения бота о преподавателе;\n4. /show-me-yourself - секретик)))))")
+    if message.text == "/help":
+        tb.send_message(message.from_user.id, "Список команд:\n1. /myphoto - вывод фотографии с вами;\n2. /joke - вывести анекдот;\n3. /makarova - вывод мнения бота о преподавателе;")
     elif message.text == "/joke":
         tb.send_message(message.from_user.id, "Эстонец поймал золотую рыбку, снял ее с крючка, а она говорит ему:\n- Отпусти меня, я исполню любое твое желание.\nВ ответ на это эстонец берет ее за хвост и со всей дури лупит ее об дерево со словами:\n- Не на-до раз-го-ва-ри-вать со мной по русс-ки.")
-    elif message.text == "/show-me-yourself":
+    elif message.text == "/showmeyourself":
         send_photo(message)
     elif message.text == "/myphoto":
         send_photo(message)
     elif message.text == "/start":
         tb.send_message(message.from_user.id, "Хочешь посмотреть на себя? введи /myphoto")
+    elif "/casino" in message.text:
+        casino(message)
     else:
         tb.send_message(message.from_user.id, "Фигню несешь, поехавший. Хочешь посмотреть на себя? введи /myphoto")
 
@@ -56,6 +56,11 @@ def send_photo(message):
         img = open(f'{imageName}', 'rb')
         tb.send_photo(message.chat.id, img, reply_to_message_id=message.message_id)
         img.close()
+@tb.message_handler(commands=['myphoto'])
+def casino(message):
+    if "/casino" in message:
+        tb.send_message(message.from_user.id, extract_arg(message.text))
 
-
+def extract_arg(arg):
+    return arg.split()[1:]
 tb.polling()
