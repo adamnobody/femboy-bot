@@ -2,6 +2,8 @@
 
 from images import ImagesLoader
 from dub import Dub
+import datetime
+import threading
 import random
 import telebot
 
@@ -29,9 +31,22 @@ def get_text_messages(message):
     elif message.text == "/start":
         tb.send_message(message.from_user.id, "Хочешь посмотреть на себя? введи /myphoto")
     elif "/casino" in message.text:
-        casino(message)
+        if "/casino" in message.text:
+            name = message.text.split(' ')[-1]
+            creationTime = datetime.datetime.now()
+            dub = Dub(name, creationTime)
+            tb.send_message(message.from_user.id, f"Имя вашего древа - {dub.name}")
+    elif message.text == "/dubs":
+        ogorod = getDub()
+        for dub in ogorod:
+            tb.send_message(message.from_user.id, dub)
     else:
         tb.send_message(message.from_user.id, "Фигню несешь, поехавший. Хочешь посмотреть на себя? введи /myphoto")
+
+def getDub():
+    with open("ogorod.txt") as ogorod:
+        dubs = ogorod.read().split('\n')
+    return dubs
 
 
 @tb.message_handler(commands=['myphoto'])
@@ -56,11 +71,5 @@ def send_photo(message):
         img = open(f'{imageName}', 'rb')
         tb.send_photo(message.chat.id, img, reply_to_message_id=message.message_id)
         img.close()
-@tb.message_handler(commands=['myphoto'])
-def casino(message):
-    if "/casino" in message:
-        tb.send_message(message.from_user.id, extract_arg(message.text))
 
-def extract_arg(arg):
-    return arg.split()[1:]
 tb.polling()
