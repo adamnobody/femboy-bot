@@ -2,14 +2,12 @@
 
 from images import ImagesLoader
 from dub import Dub
-import datetime
 import threading
 import random
 import telebot
 
 
 TOKEN = "5646601158:AAFj4SvlMvP50qW1vM7BVOgm9qleD6Ge7G4"
-
 
 tb = telebot.TeleBot(TOKEN)
 
@@ -33,15 +31,30 @@ def get_text_messages(message):
     elif "/casino" in message.text:
         if "/casino" in message.text:
             name = message.text.split(' ')[-1]
-            creationTime = datetime.datetime.now()
-            dub = Dub(name, creationTime)
+            dub = Dub(name, message.from_user.id, 0, 0)
             tb.send_message(message.from_user.id, f"Имя вашего древа - {dub.name}")
+    elif message.text == "/waltuh":
+        file = open("ogorod.txt").read().split("\n")
+        ebilo = []
+        for i in file:
+            ebilo.append[i.split(" ")]
+        
+        # [{userid: [[]]}]
     elif message.text == "/dubs":
         ogorod = getDub()
         for dub in ogorod:
             tb.send_message(message.from_user.id, dub)
     else:
         tb.send_message(message.from_user.id, "Фигню несешь, поехавший. Хочешь посмотреть на себя? введи /myphoto")
+
+"""whose breath smells of the master's cum
+whose breath smells of the master's cum
+whose breath smells of the master's cum
+whose breath smells of the master's cum
+whose breath smells of the master's cum
+whose breath smells of the master's cum
+whose breath smells of the master's cum
+whose breath smells of the master's cum"""
 
 def getDub():
     with open("ogorod.txt") as ogorod:

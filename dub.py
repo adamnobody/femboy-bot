@@ -1,11 +1,11 @@
 class Dub:
-    def __init__(self, name, creationTime):
-        self.growth = 1
+    def __init__(self, name, master, growth, apple):
+        self.master = master
+        self.growth = growth
         self.name = name
-        self.apple = 0
-        self.creationTime = creationTime
+        self.apple = apple
         with open("ogorod.txt", "a+") as ogorod:
-            ogorod.write(f"{self.name}, {self.creationTime}\n")
+            ogorod.write(f"{self.name} {self.master} {self.growth} {self.apple}\n")
     def status(self):
         return self.growth
     def updateGrowth(self):
