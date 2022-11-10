@@ -36,10 +36,21 @@ def get_text_messages(message):
     elif message.text == "/waltuh":
         file = open("ogorod.txt").read().split("\n")
         ebilo = []
-        for i in file:
-            ebilo.append[i.split(" ")]
-        
-        # [{userid: [[]]}]
+        grzegorz = {}
+        obratny_grzegorz = [] # what the fuck?
+        for hueta in file:
+            ebilo.append(hueta.split(" "))
+            grzegorz[hueta.split(" ")[1]] = []
+        for hueeta in ebilo:
+            pablo = grzegorz[hueeta[1]]
+            for huueta in ebilo:
+                if huueta[1] == hueeta[1]:
+                    pablo.append(huueta)
+            for suka in pablo:
+                print(pablo)
+                grzegorz[hueta.split(' ')[1]].append(suka)
+        file.close()
+        # {userid: [[]]}
     elif message.text == "/dubs":
         ogorod = getDub()
         for dub in ogorod:
