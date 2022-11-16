@@ -5,7 +5,7 @@ class Dub:
         self.name = name
         self.apple = apple
         with open("ogorod.txt", "a+") as ogorod:
-            ogorod.write(f"{self.name} {self.master} {self.growth} {self.apple}\n")
+            ogorod.writelines('\n' + f"{self.name} {self.master} {self.growth} {self.apple}")
     def status(self):
         return self.growth
     def updateGrowth(self):

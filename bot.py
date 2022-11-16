@@ -53,7 +53,7 @@ def get_text_messages(message):
         # а с помощью барских обращений к имени ключа. Удобно, хуй ли.
         # Ебаться подано, господа.
         duby = {key: [] for key in [id.split(' ')[1] for id in file]}
-        
+
         for id in duby.keys():
             for drevo in file:
                 info = {"Name": drevo.split(' ')[0],
@@ -61,11 +61,15 @@ def get_text_messages(message):
                         "Apples": drevo.split(' ')[3],}
                 if id == drevo.split(' ')[1]:
                     duby[drevo.split(' ')[1]].append(info)
+        print(duby)
                     
     elif message.text == "/dubs":
         ogorod = getDub()
         for dub in ogorod:
-            tb.send_message(message.from_user.id, dub)
+            try:
+                tb.send_message(message.from_user.id, dub)
+            except telebot.apihelper.ApiTelegramException:
+                pass
     else:
         tb.send_message(message.from_user.id, "Фигню несешь, поехавший. Хочешь посмотреть на себя? введи /myphoto")
 
