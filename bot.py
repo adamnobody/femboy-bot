@@ -74,7 +74,9 @@ def get_text_messages(message):
             duby = DUBY[id]
             for dub in duby:
                 if dub["Name"] == nameWater:
-                    dub["Growth"] += 1
+                    dubGrowth = int(dub["Growth"])
+                    dubGrowth += 1
+                    dub["Growth"] = str(dubGrowth)
                     tb.send_message(message.from_user.id, f"Вы полили своё дерево - {nameWater}")
 
     elif message.text == "/waltuh":
