@@ -75,8 +75,13 @@ def get_text_messages(message):
             for dub in duby:
                 if dub["Name"] == nameWater:
                     dubGrowth = int(dub["Growth"])
+                    dubApples = int(dub["Apples"])
                     dubGrowth += 1
                     dub["Growth"] = str(dubGrowth)
+                    if dubGrowth % 5 == 0:
+                        dubApples += 1
+                        dub["Apples"] = str(dubApples)
+                        tb.send_message(message.from_user.id, f"Ваше дерево {nameWater} дало плоды.")
                     tb.send_message(message.from_user.id, f"Вы полили своё дерево - {nameWater}")
 
     elif message.text == "/waltuh":
