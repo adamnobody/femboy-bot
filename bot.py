@@ -68,12 +68,12 @@ def get_text_messages(message):
             createDubs()
             tb.send_message(message.from_user.id, f"Имя вашего древа - {dub.name}")
     elif "/zapoi" in message.text:
-        nameWater = message.text.split(' ')[-1]
+        nameWalter = message.text.split(' ')[-1]
         id = str(message.from_user.id)
         if id in DUBY.keys():
             duby = DUBY[id]
             for dub in duby:
-                if dub["Name"] == nameWater:
+                if dub["Name"] == nameWalter:
                     dubGrowth = int(dub["Growth"])
                     dubApples = int(dub["Apples"])
                     dubGrowth += 1
@@ -81,8 +81,8 @@ def get_text_messages(message):
                     if dubGrowth % 5 == 0:
                         dubApples += 1
                         dub["Apples"] = str(dubApples)
-                        tb.send_message(message.from_user.id, f"Ваше дерево {nameWater} дало плоды.")
-                    tb.send_message(message.from_user.id, f"Вы полили своё дерево - {nameWater}")
+                        tb.send_message(message.from_user.id, f"Ваше дерево {nameWalter} дало плоды.")
+                    tb.send_message(message.from_user.id, f"Вы полили своё дерево - {nameWalter}")
 
     elif message.text == "/waltuh":
         id = str(message.from_user.id)
