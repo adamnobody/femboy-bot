@@ -5,3 +5,4 @@
 Дерево. 
 Дуб нахуй.
 ДРЕВО МУДРОЕ ЕБАТЬ.
+![image](https://user-images.githubusercontent.com/93332403/202641707-c1d8b5ed-f17e-48d4-8eb2-c3432fc659e3.png)
