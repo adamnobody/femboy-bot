@@ -3,6 +3,7 @@
 from images import ImagesLoader
 from dub import Dub
 import threading
+import datetime
 import random
 import telebot
 
@@ -34,13 +35,15 @@ def createDubs():
         for drevo in file:
             info = {"Name": drevo.split(' ')[0],
                     "Growth": drevo.split(' ')[2],
-                    "Apples": drevo.split(' ')[3],}
+                    "Apples": drevo.split(' ')[3],
+                    "lastZapoi": drevo.split(' ')[5]}
             if id == drevo.split(' ')[1]:
                 DUBY[drevo.split(' ')[1]].append(info)
 
 TOKEN = "5646601158:AAFj4SvlMvP50qW1vM7BVOgm9qleD6Ge7G4"
 DUBY = {}
 createDubs()
+APPLE = 0
 
 tb = telebot.TeleBot(TOKEN)
 
@@ -51,6 +54,7 @@ imageLoader.loadImages()
 
 @tb.message_handler(content_types=['text'])
 def get_text_messages(message):
+    global APPLE
     if message.text == "/help":
         tb.send_message(message.from_user.id, "Список команд:\n1. /myphoto - вывод фотографии с вами;\n2. /joke - вывести анекдот;\n3. /makarova - вывод мнения бота о преподавателе;")
     elif message.text == "/joke":
@@ -61,13 +65,25 @@ def get_text_messages(message):
         send_photo(message)
     elif message.text == "/start":
         tb.send_message(message.from_user.id, "Хочешь посмотреть на себя? введи /myphoto")
+    elif message.text == "/apples":
+        id = str(message.from_user.id)
+        if id in DUBY.keys():
+            duby = DUBY[id]
+            for dub in duby:
+                noApples = int(dub["Apples"])
+                APPLE += noApples
+                noApples = 0
+                dub["Apples"] = str(noApples)
+        tb.send_message(message.from_user.id, f"Вы собрали все яблоки. Сейчас их у вас {APPLE}")
     elif "/casino" in message.text:
         if "/casino" in message.text:
             name = message.text.split(' ')[-1]
-            dub = Dub(name, message.from_user.id, 0, 0)
+            timeNow = datetime.datetime.now()
+            dub = Dub(name, message.from_user.id, 0, 0, timeNow)
             createDubs()
             tb.send_message(message.from_user.id, f"Имя вашего древа - {dub.name}")
     elif "/zapoi" in message.text:
+        timeNow = datetime.datetime.now();
         nameWalter = message.text.split(' ')[-1]
         id = str(message.from_user.id)
         if id in DUBY.keys():
@@ -76,13 +92,20 @@ def get_text_messages(message):
                 if dub["Name"] == nameWalter:
                     dubGrowth = int(dub["Growth"])
                     dubApples = int(dub["Apples"])
-                    dubGrowth += 1
+                    dubZapoi = datetime.datetime.strptime(dub["lastZapoi"], "%H:%M:%S")
+                    timeNow = datetime.datetime.strptime(datetime.datetime.now().split(' ')[1], "%H:%M:%S")
+                    tb.send_message(message.from_user.id, f"{timeNow-dubZapoi}")
+                    if (timeNow - dubZapoi) > datetime.time(4):
+                        dubGrowth += 1
+                        dub["lastZapoi"] = str(timeNow)
+                        tb.send_message(message.from_user.id, f"Вы полили своё дерево - {nameWalter}")
+                    else:
+                        tb.send_message(message.from_user.id, f"Древо {nameWalter} можно полить через {(timeNow-dubZapoi)}")
                     dub["Growth"] = str(dubGrowth)
                     if dubGrowth % 5 == 0:
                         dubApples += 1
                         dub["Apples"] = str(dubApples)
                         tb.send_message(message.from_user.id, f"Ваше дерево {nameWalter} дало плоды.")
-                    tb.send_message(message.from_user.id, f"Вы полили своё дерево - {nameWalter}")
 
     elif message.text == "/waltuh":
         id = str(message.from_user.id)
@@ -90,7 +113,7 @@ def get_text_messages(message):
             duby = DUBY[id]
             msg = ''
             for dub in duby:
-                msg += f'Имя: {dub["Name"]} Рост: {dub["Growth"]} Яблоки: {dub["Apples"]}\n'
+                msg += f'Имя: {dub["Name"]} Рост: {dub["Growth"]} Яблоки: {dub["Apples"]} Время последнего полива: {dub["lastZapoi"]}\n'
             tb.send_message(message.from_user.id, msg)
         else:
             tb.send_message(message.from_user.id, "У вас нет дубов. Создайте с помощью команды /casino <Имя дуба>.")
