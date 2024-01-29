@@ -40,7 +40,7 @@ def createDubs():
             if id == drevo.split(' ')[1]:
                 DUBY[drevo.split(' ')[1]].append(info)
 
-TOKEN = "5646601158:AAFj4SvlMvP50qW1vM7BVOgm9qleD6Ge7G4"
+TOKEN = ""
 DUBY = {}
 createDubs()
 APPLE = 0
